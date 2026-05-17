@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -32,8 +33,46 @@ class UserController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'Account created successfully',
+            'result' => true,
+            'msg' => 'Account created successfully',
             'user' => $user
         ], 201);
+    }
+
+    public function show(User $id)
+    {
+        return response()->json([
+            'result' => true,
+            'msg' => 'User found successfully',
+            'user' => $id
+        ]);
+    }
+    public function login(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string'
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
+            return response()->json([
+                'result' => false,
+                'msg' => 'Invalid email or password'
+            ], 401);
+        }
+
+        // Generate and save remember_token
+        $rememberToken = Str::random(80);
+        $user->remember_token = $rememberToken;
+        $user->save();
+
+        return response()->json([
+            'result' => true,
+            'msg' => 'Login successful',
+            'user' => $user,
+            'token' => $rememberToken
+        ]);
     }
 }
