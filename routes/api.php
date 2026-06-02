@@ -21,5 +21,5 @@ Route::get('/productTypes', [TypeProductController::class, 'getProductionTypes']
 Route::post('/productTypes', [TypeProductController::class, 'addProductType']);
 
 //products
-// Route::get('/products', [ProductController::class, 'getProducts'])->middleware('auth:sanctum');
+Route::get('/products', [ProductController::class, 'getProducts'])->middleware('auth:sanctum');
 Route::post('/products', [ProductController::class, 'addProducts'])->middleware('auth:sanctum');
