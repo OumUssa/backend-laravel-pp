@@ -67,4 +67,5 @@ class ProductController extends Controller
             'product' => $product
         ], 201);
     }
+    
 }
