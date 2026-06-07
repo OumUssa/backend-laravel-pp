@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    //show all users
     public function index()
     {
         $users = User::all();
@@ -18,6 +19,7 @@ class UserController extends Controller
         ]);
     }
 
+    //register
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -39,14 +41,23 @@ class UserController extends Controller
         ], 201);
     }
 
-    public function show(User $id)
-    {
+    //show specific user
+    public function show(Request $request){
+        $user = $request->user();
         return response()->json([
             'result' => true,
             'msg' => 'User found successfully',
-            'user' => $id
+            'user' => $user
         ]);
     }
+    // public function show(User $id)
+    // {
+    //     return response()->json([
+    //         'result' => true,
+    //         'msg' => 'User found successfully',
+    //         'user' => $id
+    //     ]);
+    // }
     public function login(Request $request)
     {
         $validated = $request->validate([
@@ -64,15 +75,24 @@ class UserController extends Controller
         }
 
         // Generate and save remember_token
-        $rememberToken = Str::random(80);
-        $user->remember_token = $rememberToken;
-        $user->save();
+        // $rememberToken = Str::random(80);
+        // $user->remember_token = $rememberToken;
+        // $user->save();
+        $token = $user->createToken('API Token')->plainTextToken;
 
         return response()->json([
             'result' => true,
             'msg' => 'Login successful',
             'user' => $user,
-            'token' => $rememberToken
+            'token' => $token
         ]);
+    }
+
+    //logout
+    public function logout(Request $request){
+        //delete current access token
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['msg'=> 'Logged out successfully'], 200);
     }
 }

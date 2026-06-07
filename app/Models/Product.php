@@ -24,4 +24,12 @@ class Product extends Model
     public function petCategories(){
         return $this->belongsTo(PetCategory::class);
     }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function purchase(){
+        return $this->hasMany(Product::class);
+    }
 }
