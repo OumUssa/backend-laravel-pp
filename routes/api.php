@@ -19,10 +19,12 @@ Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanct
 //pet categories
 Route::get('/petCategories', [PetCategoryController::class, 'getPetCategories']);
 Route::post('/petCategories', [PetCategoryController::class, 'addPetCategories']);
+Route::put('/petCategories/{id}', [PetCategoryController::class, 'updatePetCategory'])->middleware('auth:sanctum');
 
 //product types
 Route::get('/productTypes', [TypeProductController::class, 'getProductionTypes']);
 Route::post('/productTypes', [TypeProductController::class, 'addProductType']);
+Route::put('/productTypes/{id}', [TypeProductController::class, 'updateProductType'])->middleware('auth:sanctum');
 
 //products
 Route::get('/products', [ProductController::class, 'getAllProducts']);
