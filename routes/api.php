@@ -9,7 +9,7 @@ use App\Http\Controllers\TypeProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/users', [UserController::class, 'index'])->middleware('auth.api');
+Route::get('/users', [UserController::class, 'index'])->middleware('auth:sanctum');
 Route::post('/register', [UserController::class, 'store']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/profile', [UserController::class, 'getUserProfile'])->middleware('auth:sanctum');
