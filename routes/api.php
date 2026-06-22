@@ -4,6 +4,7 @@
 use App\Http\Controllers\PetCategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\TypeProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -16,13 +17,28 @@ Route::put('/profile', [UserController::class, 'updateProfile'])->middleware('au
 Route::get('/users/{id}', [UserController::class, 'getUserProfile'])->middleware('auth:sanctum');
 Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
+//admin routes
+Route::get('/admin/users/{id}/purchase', [PurchaseController::class, 'showAdminUserPurchases'])->middleware('auth:sanctum');
+
+// Password Reset
+Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword']);
+Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword']);
+
 //pet categories
 Route::get('/petCategories', [PetCategoryController::class, 'getPetCategories']);
 Route::post('/petCategories', [PetCategoryController::class, 'addPetCategories']);
+Route::put('/petCategories/{id}', [PetCategoryController::class, 'updatePetCategory']);
+Route::post('/petCategories/update/{id}', [PetCategoryController::class, 'updatePetCategory']);
+Route::delete('/petCategories/{id}', [PetCategoryController::class, 'destroy']);
+Route::post('/petCategories/delete/{id}', [PetCategoryController::class, 'destroy']);
 
 //product types
 Route::get('/productTypes', [TypeProductController::class, 'getProductionTypes']);
 Route::post('/productTypes', [TypeProductController::class, 'addProductType']);
+Route::put('/productTypes/{id}', [TypeProductController::class, 'updateProductType']);
+Route::post('/productTypes/update/{id}', [TypeProductController::class, 'updateProductType']);
+Route::delete('/productTypes/{id}', [TypeProductController::class, 'destroy']);
+Route::post('/productTypes/delete/{id}', [TypeProductController::class, 'destroy']);
 
 //products
 Route::get('/products', [ProductController::class, 'getAllProducts']);

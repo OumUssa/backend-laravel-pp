@@ -12,13 +12,13 @@ class ProductController extends Controller
 {
     //show all products belong to all users
     public function getAllProducts(){
-        $products = Product::all();
+        $products = Product::with(['user', 'petCategory', 'productType'])->get();
         return response()->json($products);
     }
 
     //show all products belong to specific user
     public function getProductsFromAUser(Request $request){
-        $products = Product::where('user_id', $request->user()->id)->get();
+        $products = Product::with(['user', 'petCategory', 'productType'])->where('user_id', $request->user()->id)->get();
         return response()->json($products);
     }
 

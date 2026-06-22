@@ -25,4 +25,42 @@ class TypeProductController extends Controller
             'product_type' => $productType
         ], 201);
     }
+
+    public function updateProductType(Request $request, $id){
+        $validated = $request->validate([
+            'name' => 'required|string|max:100'
+        ]);
+
+        $productType = TypeProduct::find($id);
+        if (!$productType) {
+            return response()->json(['message' => 'Product type not found'], 404);
+        }
+
+        $productType->update($validated);
+
+        return response()->json([
+            'result' => true,
+            'message' => 'Product type updated successfully',
+            'product_type' => $productType
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $productType = TypeProduct::find($id);
+
+        if (!$productType) {
+            return response()->json([
+                'result' => false,
+                'message' => 'Product type not found'
+            ], 404);
+        }
+
+        $productType->delete();
+
+        return response()->json([
+            'result' => true,
+            'message' => 'Product type deleted successfully'
+        ]);
+    }
 }

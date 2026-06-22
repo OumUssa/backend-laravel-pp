@@ -27,4 +27,42 @@ class PetCategoryController extends Controller
             'pet_categories' => $petCategory
         ], 201);
     }
+
+    public function updatePetCategory(Request $request, $id){
+        $validated = $request->validate([
+            'name'=> 'required|string|max:100'
+        ]);
+
+        $petCategory = PetCategory::find($id);
+        if (!$petCategory) {
+            return response()->json(['message' => 'Pet category not found'], 404);
+        }
+
+        $petCategory->update($validated);
+
+        return response()->json([
+            'result' => true,
+            'message' => 'Pet category updated successfully',
+            'pet_category' => $petCategory
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $petCategory = PetCategory::find($id);
+
+        if (!$petCategory) {
+            return response()->json([
+                'result' => false,
+                'message' => 'Pet category not found'
+            ], 404);
+        }
+
+        $petCategory->delete();
+
+        return response()->json([
+            'result' => true,
+            'message' => 'Pet category deleted successfully'
+        ]);
+    }
 }
