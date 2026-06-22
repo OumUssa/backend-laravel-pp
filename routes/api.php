@@ -25,15 +25,15 @@ Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword
 Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword']);
 
 //pet categories
-Route::get('/petCategories', [PetCategoryController::class, 'index']);
-Route::post('/petCategories', [PetCategoryController::class, 'store']);
-Route::put('/petCategories/{id}', [PetCategoryController::class, 'update']);
+Route::get('/petCategories', [PetCategoryController::class, 'getPetCategories']);
+Route::post('/petCategories', [PetCategoryController::class, 'addPetCategories']);
+Route::put('/petCategories/{id}', [PetCategoryController::class, 'updatePetCategory']);
 Route::delete('/petCategories/{id}', [PetCategoryController::class, 'destroy']);
 
 //product types
-Route::get('/productTypes', [TypeProductController::class, 'index']);
-Route::post('/productTypes', [TypeProductController::class, 'store']);
-Route::put('/productTypes/{id}', [TypeProductController::class, 'update']);
+Route::get('/productTypes', [TypeProductController::class, 'getProductionTypes']);
+Route::post('/productTypes', [TypeProductController::class, 'addProductType']);
+Route::put('/productTypes/{id}', [TypeProductController::class, 'updateProductType']);
 Route::delete('/productTypes/{id}', [TypeProductController::class, 'destroy']);
 
 //products
