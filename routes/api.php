@@ -23,6 +23,7 @@ Route::get('/admin/users/{id}/purchase', [PurchaseController::class, 'showAdminU
 // Password Reset
 Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword']);
 Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword']);
+Route::post('/direct-reset-password', [ResetPasswordController::class, 'directResetPassword']);
 
 //pet categories
 Route::get('/petCategories', [PetCategoryController::class, 'getPetCategories']);
