@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/users', [UserController::class, 'index'])->middleware('auth.api');
 Route::post('/register', [UserController::class, 'store']);
 Route::post('/login', [UserController::class, 'login']);
-Route::get('/user', [UserController::class, 'show'])->middleware('auth:sanctum');
+Route::get('/profile', [UserController::class, 'getUserProfile'])->middleware('auth:sanctum');
+Route::get('/users/{id}', [UserController::class, 'getUserProfile'])->middleware('auth:sanctum');
 Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 //pet categories
