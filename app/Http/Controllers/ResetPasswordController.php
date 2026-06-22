@@ -74,4 +74,22 @@ class ResetPasswordController extends Controller
 
         return response()->json(['result' => true, 'message' => 'Password reset successfully. You can now login.']);
     }
+
+    public function directResetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:6'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json(['result' => false, 'message' => 'User not found with this email.'], 404);
+        }
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json(['result' => true, 'message' => 'Password changed successfully. You can now login.']);
+    }
 }
