@@ -41,8 +41,28 @@ class PetCategoryController extends Controller
         $petCategory->update($validated);
 
         return response()->json([
+            'result' => true,
             'message' => 'Pet category updated successfully',
             'pet_category' => $petCategory
-        ], 200);
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $petCategory = PetCategory::find($id);
+
+        if (!$petCategory) {
+            return response()->json([
+                'result' => false,
+                'message' => 'Pet category not found'
+            ], 404);
+        }
+
+        $petCategory->delete();
+
+        return response()->json([
+            'result' => true,
+            'message' => 'Pet category deleted successfully'
+        ]);
     }
 }

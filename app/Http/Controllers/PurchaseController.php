@@ -58,4 +58,16 @@ class PurchaseController extends Controller
 
         return response()->json($purchases);
     }
+
+    //get purchase history for admin
+    public function showAdminUserPurchases(Request $request, $id){
+        $user = $request->user();
+        if ($user->role_id != 1 && strtolower($user->email) !== 'admin@petstore.com') {
+            return response()->json(['msg' => 'Unauthorized'], 403);
+        }
+
+        $purchases = Purchase::where('user_id', $id)->with('product')->get();
+
+        return response()->json($purchases);
+    }
 }

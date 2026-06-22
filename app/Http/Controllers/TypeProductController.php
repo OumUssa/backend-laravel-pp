@@ -39,8 +39,28 @@ class TypeProductController extends Controller
         $productType->update($validated);
 
         return response()->json([
-            'message'=> 'Product type updated successfully',
+            'result' => true,
+            'message' => 'Product type updated successfully',
             'product_type' => $productType
-        ], 200);
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $productType = TypeProduct::find($id);
+
+        if (!$productType) {
+            return response()->json([
+                'result' => false,
+                'message' => 'Product type not found'
+            ], 404);
+        }
+
+        $productType->delete();
+
+        return response()->json([
+            'result' => true,
+            'message' => 'Product type deleted successfully'
+        ]);
     }
 }
