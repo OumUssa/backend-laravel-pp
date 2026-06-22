@@ -41,14 +41,55 @@ class UserController extends Controller
         ], 201);
     }
 
-    //show specific user
-    public function show(Request $request){
-        $user = $request->user();
+    // Get profile for me and admin
+    public function getUserProfile(Request $request, $id = null)
+    {
+        $currentUser = $request->user();
+        
+        // Load the current user's profile with role name
+        $currentUserProfile = User::select('users.*', 'roles.name as role_name')
+            ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+            ->where('users.id', $currentUser->id)
+            ->first();
+
+        // If no ID is provided, return the logged-in user's profile (Me)
+        if (!$id) {
+            return response()->json([
+                'result' => true,
+                'msg' => 'My profile retrieved successfully',
+                'user' => $currentUserProfile ?: $currentUser
+            ]);
+        }
+
+        // Check if the user is an admin.
+        // Assume 'admin' is the role name or role_id 1 is admin.
+        $isAdmin = ($currentUserProfile && $currentUserProfile->role_name === 'admin') || $currentUser->role_id == 1;
+
+        // Allow if the user is fetching their own profile or if they are an admin
+        if ($currentUser->id == $id || $isAdmin) {
+            $user = User::select('users.*', 'roles.name as role_name')
+                ->leftJoin('roles', 'users.role_id', '=', 'roles.id')
+                ->where('users.id', $id)
+                ->first();
+            
+            if (!$user) {
+                return response()->json([
+                    'result' => false,
+                    'msg' => 'User not found'
+                ], 404);
+            }
+
+            return response()->json([
+                'result' => true,
+                'msg' => 'User profile retrieved successfully',
+                'user' => $user
+            ]);
+        }
+
         return response()->json([
-            'result' => true,
-            'msg' => 'User found successfully',
-            'user' => $user
-        ]);
+            'result' => false,
+            'msg' => 'Unauthorized. Only admins can view other users\' profiles.'
+        ], 403);
     }
     // public function show(User $id)
     // {
