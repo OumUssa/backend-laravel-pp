@@ -17,19 +17,19 @@ class Product extends Model
         'pet_category_id'
     ];
 
-    public function productTypes(){
-        return $this->belongsTo(TypeProduct::class);
+    public function productType(){
+        return $this->belongsTo(TypeProduct::class, 'type_product_id');
     }
 
-    public function petCategories(){
-        return $this->belongsTo(PetCategory::class);
+    public function petCategory(){
+        return $this->belongsTo(PetCategory::class, 'pet_category_id');
     }
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function purchase(){
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Purchase::class);
     }
 }

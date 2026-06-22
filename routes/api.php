@@ -28,13 +28,17 @@ Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword']
 Route::get('/petCategories', [PetCategoryController::class, 'getPetCategories']);
 Route::post('/petCategories', [PetCategoryController::class, 'addPetCategories']);
 Route::put('/petCategories/{id}', [PetCategoryController::class, 'updatePetCategory']);
+Route::post('/petCategories/update/{id}', [PetCategoryController::class, 'updatePetCategory']);
 Route::delete('/petCategories/{id}', [PetCategoryController::class, 'destroy']);
+Route::post('/petCategories/delete/{id}', [PetCategoryController::class, 'destroy']);
 
 //product types
 Route::get('/productTypes', [TypeProductController::class, 'getProductionTypes']);
 Route::post('/productTypes', [TypeProductController::class, 'addProductType']);
 Route::put('/productTypes/{id}', [TypeProductController::class, 'updateProductType']);
+Route::post('/productTypes/update/{id}', [TypeProductController::class, 'updateProductType']);
 Route::delete('/productTypes/{id}', [TypeProductController::class, 'destroy']);
+Route::post('/productTypes/delete/{id}', [TypeProductController::class, 'destroy']);
 
 //products
 Route::get('/products', [ProductController::class, 'getAllProducts']);
