@@ -91,14 +91,34 @@ class UserController extends Controller
             'msg' => 'Unauthorized. Only admins can view other users\' profiles.'
         ], 403);
     }
-    // public function show(User $id)
-    // {
-    //     return response()->json([
-    //         'result' => true,
-    //         'msg' => 'User found successfully',
-    //         'user' => $id
-    //     ]);
-    // }
+    // Update profile for authenticated user
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $validated = $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
+            'avatar' => 'nullable|string',
+            'company_name' => 'nullable|string|max:255',
+            'location' => 'nullable|string',
+            'phone' => 'nullable|string|max:20',
+            'password' => 'sometimes|required|string|min:6'
+        ]);
+
+        if (isset($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        }
+
+        // Specifically excluding role_id, even if passed it won't be updated since it's not in validated data
+        $user->update($validated);
+
+        return response()->json([
+            'result' => true,
+            'msg' => 'Profile updated successfully',
+            'user' => $user
+        ]);
+    }
     public function login(Request $request)
     {
         $validated = $request->validate([

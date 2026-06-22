@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [UserController::class, 'store']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/profile', [UserController::class, 'getUserProfile'])->middleware('auth:sanctum');
+Route::put('/profile', [UserController::class, 'updateProfile'])->middleware('auth:sanctum');
 Route::get('/users/{id}', [UserController::class, 'getUserProfile'])->middleware('auth:sanctum');
 Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
