@@ -21,14 +21,14 @@ class ContactController extends Controller
             'full_name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:50',
-            'topic' => 'required|in:general,support,feedback,other',
+            'topic' => 'required|in:general,support,feedback,other,change_role',
             'message' => 'required|string',
         ]);
 
-        $user = $request->user();
+        $user_id = auth('sanctum')->check() ? auth('sanctum')->id() : null;
 
         $contact = Contact::create([
-            'user_id' => $user->id,
+            'user_id' => $user_id,
             'full_name' => $validated['full_name'],
             'email' => $validated['email'],
             'phone' => $validated['phone'] ?? null,

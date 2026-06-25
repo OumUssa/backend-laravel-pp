@@ -65,7 +65,7 @@ Route::get('/purchase', [PurchaseController::class, 'showUserPurchases'])->middl
 Route::put('/purchase/{id}/status', [PurchaseController::class, 'updateStatus'])->middleware('auth:sanctum');
 
 //contacts
-Route::post('/contacts', [ContactController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/contacts', [ContactController::class, 'store']);
 Route::get('/contacts', [ContactController::class, 'index'])->middleware('auth:sanctum');
 Route::get('/contacts/{id}', [ContactController::class, 'show'])->middleware('auth:sanctum');
 Route::put('/contacts/{id}/reply', [ContactController::class, 'reply'])->middleware('auth:sanctum');
