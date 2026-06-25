@@ -70,4 +70,33 @@ class PurchaseController extends Controller
 
         return response()->json($purchases);
     }
+
+    //update purchase status
+    public function updateStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:pending,processing,completed,cancelled'
+        ]);
+
+        $purchase = Purchase::find($id);
+
+        if (!$purchase) {
+            return response()->json(['msg' => 'Purchase not found'], 404);
+        }
+
+        // Only admins can update status
+        $user = $request->user();
+        if ($user->role_id != 1 && $user->role_id != 2 && strtolower($user->email) !== 'admin@petstore.com') {
+            return response()->json(['msg' => 'Unauthorized'], 403);
+        }
+
+        $purchase->status = $validated['status'];
+        $purchase->save();
+
+        return response()->json([
+            'result' => true,
+            'msg' => 'Purchase status updated successfully',
+            'data' => $purchase
+        ]);
+    }
 }

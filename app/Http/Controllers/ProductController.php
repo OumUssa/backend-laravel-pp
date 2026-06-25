@@ -43,6 +43,14 @@ class ProductController extends Controller
         //get product type
         $product_type = TypeProduct::where('name', $validated['product_type_name'])->first();
 
+        // Check if user is admin (role_id == 2)
+        if ($user->role_id != 2 && $user->role_id != 1) {
+            return response()->json([
+                'result' => false,
+                'msg' => 'Unauthorized. Only admins can create products.'
+            ], 403);
+        }
+
         //if pet catg & product type are not found
         if(!$pet_category){
             return response()->json([
@@ -143,6 +151,21 @@ class ProductController extends Controller
             'result' => true,
             'msg' => 'Product deleted successfully',
         ]);
+    }
+
+    //get a single product details
+    public function getProduct($id)
+    {
+        $product = Product::with(['user', 'petCategory', 'productType'])->find($id);
+
+        if (!$product) {
+            return response()->json([
+                'result' => false,
+                'msg' => 'Product not found'
+            ], 404);
+        }
+
+        return response()->json($product);
     }
 }
 

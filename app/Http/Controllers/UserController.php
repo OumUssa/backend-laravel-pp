@@ -156,4 +156,39 @@ class UserController extends Controller
 
         return response()->json(['msg'=> 'Logged out successfully'], 200);
     }
+
+    // Update user role (Admin only)
+    public function updateRole(Request $request, $id)
+    {
+        $adminUser = $request->user();
+
+        // Check if user is an admin (role_id 1 or 2)
+        if (!in_array($adminUser->role_id, [1, 2])) {
+            return response()->json([
+                'result' => false,
+                'msg' => 'Unauthorized. Only admins can update roles.'
+            ], 403);
+        }
+
+        $validated = $request->validate([
+            'role_id' => 'required|integer|exists:roles,id'
+        ]);
+
+        $userToUpdate = User::find($id);
+
+        if (!$userToUpdate) {
+            return response()->json([
+                'result' => false,
+                'msg' => 'User not found'
+            ], 404);
+        }
+
+        $userToUpdate->update(['role_id' => $validated['role_id']]);
+
+        return response()->json([
+            'result' => true,
+            'msg' => 'User role updated successfully',
+            'user' => $userToUpdate
+        ]);
+    }
 }

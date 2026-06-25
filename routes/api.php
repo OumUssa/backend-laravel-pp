@@ -1,7 +1,10 @@
 
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\PetCategoryController;
+use App\Http\Controllers\ProductCommentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ResetPasswordController;
@@ -19,6 +22,8 @@ Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanct
 
 //admin routes
 Route::get('/admin/users/{id}/purchase', [PurchaseController::class, 'showAdminUserPurchases'])->middleware('auth:sanctum');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->middleware('auth:sanctum');
+Route::put('/users/{id}/role', [UserController::class, 'updateRole'])->middleware('auth:sanctum');
 
 // Password Reset
 Route::post('/forgot-password', [ResetPasswordController::class, 'forgotPassword']);
@@ -43,11 +48,24 @@ Route::post('/productTypes/delete/{id}', [TypeProductController::class, 'destroy
 
 //products
 Route::get('/products', [ProductController::class, 'getAllProducts']);
+Route::get('/products/{id}', [ProductController::class, 'getProduct']);
 Route::get('/userProduct', [ProductController::class, 'getProductsFromAUser'])->middleware('auth:sanctum');
 Route::post('/products', [ProductController::class, 'addProducts'])->middleware('auth:sanctum');
 Route::put('/products/{name}', [ProductController::class, 'updateProduct'])->middleware('auth:sanctum');
 Route::delete('/products/{name}', [ProductController::class, 'deleteProduct'])->middleware('auth:sanctum');
 
+//product comments
+Route::post('/products/{id}/comments', [ProductCommentController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/products/{id}/comments', [ProductCommentController::class, 'index']);
+Route::delete('/comments/{id}', [ProductCommentController::class, 'destroy'])->middleware('auth:sanctum');
+
 //purchase
 Route::post('/purchase', [PurchaseController::class, 'purchaseProduct'])->middleware('auth:sanctum');
 Route::get('/purchase', [PurchaseController::class, 'showUserPurchases'])->middleware('auth:sanctum');
+Route::put('/purchase/{id}/status', [PurchaseController::class, 'updateStatus'])->middleware('auth:sanctum');
+
+//contacts
+Route::post('/contacts', [ContactController::class, 'store'])->middleware('auth:sanctum');
+Route::get('/contacts', [ContactController::class, 'index'])->middleware('auth:sanctum');
+Route::get('/contacts/{id}', [ContactController::class, 'show'])->middleware('auth:sanctum');
+Route::put('/contacts/{id}/reply', [ContactController::class, 'reply'])->middleware('auth:sanctum');
